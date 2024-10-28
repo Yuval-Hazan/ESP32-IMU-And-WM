@@ -1,96 +1,94 @@
-### README
+# ESP32 Wireless Monitoring System with IMU
 
-# ESP32 Wireless Serial Monitor
+This project implements a wireless monitoring system on an ESP32, featuring an Inertial Measurement Unit (IMU) for motion tracking and an integrated wireless connection module. The goal is to gather, process, and transmit sensor data wirelessly for remote monitoring, suitable for applications in robotics, IoT, and more.
 
-This project sets up an ESP32 as a wireless serial monitor. It creates a Wi-Fi access point, serves a web, handles DNS requests for a captive portal, and uses WebSockets to display real-time logs on the web page.
+## Table of Contents
 
-![Alt text](docs/Monitor.png)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [File Structure](#file-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Resources
+## Project Overview
 
-These Resources were used in this porject's creation.
+The **ESP32 Wireless Monitoring System** combines real-time data processing and wireless communication capabilities using the ESP32 microcontroller. The system collects motion data from an IMU sensor, processes it, and sends it over Wi-Fi, allowing for real-time remote monitoring of the device's movement and orientation.
 
--   https://www.instructables.com/Implementing-Web-Server-on-ESP32/
--   https://medium.com/@atacanymc/creating-a-captive-portal-with-esp32-a-step-by-step-guide-9e9f78ab87b8
--   https://randomnerdtutorials.com/esp32-websocket-server-sensor/#demonstration
+## Features
 
-## Libraries
+- **Real-Time IMU Data Acquisition**: Collects and processes orientation and motion data.
+- **Wireless Transmission**: Transmits data over Wi-Fi for remote monitoring.
+- **Modular Design**: Structured code with reusable modules, such as `WirelessMonitor` and `IMU`.
+- **Scalable Configuration**: Easily adaptable to various use cases by modifying the configuration files.
 
--   Non built in libraries used in this project are:
-    -   [ESP Async WebServer](https://github.com/dvarrel/ESPAsyncWebSrv)
-    -   [AsyncTCP](https://github.com/dvarrel/AsyncTCP)
-    -   [WebSockets](https://github.com/Links2004/arduinoWebSockets)
--   Built in libraries used in this project are:
-    -   [ESPmDNS](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESPmDNS)
-    -   [DNS Server](https://github.com/espressif/arduino-esp32/tree/master/libraries/DNSServer)
-    -   wifi.h
-    -   arduino.h
+## Requirements
 
-## Project Structure
+- **Hardware**:
+  - ESP32 Development Board
+  - IMU Sensor (e.g., MPU6050)
+  - Wi-Fi Connection
 
-```plaintext
-├── docs
-│   ├── Captive.png           # Screenshot of the captive portal page
-│   └── Monitor.png           # Screenshot of the serial monitor page
-├── include
-│   ├── EmbeddedFiles.h       # Header file containing embedded HTML, CSS, and JS files
-│   └── WirelessMonitor.h     # Header file defining the WirelessMonitor class and its methods
-├── src
-│   ├── EmbeddedFiles.cpp     # Source file with the implementation for serving embedded files
-│   ├── main.cpp              # Main entry point of the program
-│   └── WirelessMonitor.cpp   # Implementation of the WirelessMonitor class
-├── .gitignore                # Git ignore file for excluding certain files and directories
-├── platformio.ini            # PlatformIO configuration file
-└── README.md                 # Project README file
+- **Software**:
+  - PlatformIO (recommended) or Arduino IDE
+  - ESP-IDF or ESP32 Core for Arduino
+  - Libraries:
+    - `AsyncTCP`
+    - `ESPAsyncWebServer`
 
-```
+## Installation
 
-## Prerequisites
+1. **Clone the repository**:
 
--   [PlatformIO](https://platformio.org/) installed in your IDE (e.g., VSCode).
--   ESP32 development board.
+2. **Install PlatformIO** (recommended for ESP32 projects):
+   - Follow the [PlatformIO installation guide](https://platformio.org/install/cli).
 
-## Setup and Installation
+3. **Install Required Libraries**:
+   - PlatformIO automatically installs libraries specified in the `platformio.ini` file.
 
-1.  **Configure PlatformIO**:
-    Ensure `platformio.ini` includes the necessary libraries and settings:
-
-    ```ini
-    [env:esp32dev]
-    platform = espressif32
-    board = esp32dev
-    framework = arduino
-    lib_deps =
-    me-no-dev/AsyncTCP@^1.1.1
-    me-no-dev/ESP Async WebServer@^1.2.4
-    links2004/WebSockets@^2.4.2
-    ESPmDNS
-
-    ```
-
-
-2.  **Upload Firmware**:
-    Compile and upload the firmware code to your ESP32:
-    ```sh
-    pio run --target upload
-    ```
+4. **Build and Upload**:
+   ```bash
+   pio run --target upload
+   ```
 
 ## Usage
 
-1. **Connect to ESP32 Wi-Fi**:
+1. Power on the ESP32 device.
+2. Connect to the Wi-Fi network specified in the configuration.
+3. The device will start streaming IMU data over the Wi-Fi.
+4. Access the data through the specified IP address and port.
 
-    - Network Name (SSID): `ESP32-AP`
-    - Password: `12345678`
+## Configuration
 
-2. **Open Web Browser**:
+- **WirelessMonitor Settings**:
+  - Configure the Wi-Fi SSID, password, and IP address in `WirelessMonitor.h`.
+  
+- **IMU Settings**:
+  - Adjust sensor settings in `IMU.h` to match the specific IMU model and desired data output.
 
-    - The captive portal will popup with a link to directly view the serial monitor which will open `http://serialmonitor.local`
-    - ![Alt text](docs/Captive.png)
-    - to view in your browser open this http://serialmonitor.local.
+## File Structure
 
-3. **View Serial Output**:
-    - The web page will display real-time logs from the ESP32.
+```plaintext
+├── lib
+│   ├── EmbeddedFiles
+│   │   ├── EmbeddedFiles.cpp
+│   │   └── EmbeddedFiles.h
+│   ├── IMU
+│   │   ├── IMU.cpp
+│   │   └── IMU.h
+│   └── WirelessMonitor
+│       ├── WirelessMonitor.cpp
+│       └── WirelessMonitor.h
+└── src
+    └── main.cpp
+```
 
+## Contributing
+
+Contributions are welcome! Please fork the repository, create a new branch, and submit a pull request for review.
 
 ## License
 
